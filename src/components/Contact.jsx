@@ -40,12 +40,7 @@ function Contact() {
         </button>
       </form>
       <div className=' mt-5 flex flex-col items-center justify-center'>
-        <div>
-          Phone:
-          <a className=' ml-2 text-indigo-600' href='tel:0477353123'>
-            +61 0477353123
-          </a>
-        </div>
+        
         <div>
           Email:
           <a className='ml-2 text-indigo-600' href='mailto:0477353123'>
