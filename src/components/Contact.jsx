@@ -1,54 +1,215 @@
-import React from "react"
+import React, { useRef, useState } from "react"
+import emailjs from "@emailjs/browser"
+import { ToastContainer, toast } from "react-toastify"
 
-function Contact() {
+import "react-toastify/dist/ReactToastify.css"
+import { Tooltip } from "./Tooltip"
+
+const Contact = ({ classicHeader, darkTheme }) => {
+  const form = useRef()
+  const [sendingMail, setSendingMail] = useState(false)
+
+  const sendEmail = (e) => {
+    e.preventDefault()
+    setSendingMail(true)
+    emailjs
+      .sendForm(
+        "service_8fuy0ni",
+        "template_msiqzbf",
+        form.current,
+        "v4b43g3mJoCao8QCU"
+      )
+      .then(
+        (result) => {
+          document.getElementById("contact-form").reset()
+          toast.success("Message sent successfully!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: darkTheme ? "dark" : "light",
+          })
+          console.log(result.text)
+          setSendingMail(false)
+        },
+        (error) => {
+          toast.error("Something went wrong!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: darkTheme ? "dark" : "light",
+          })
+          console.log(error.text)
+          setSendingMail(false)
+        }
+      )
+  }
+
   return (
-    <div className='pt-topSm  h-topSm h-almostsm '>
-      <div className=''>
-        <h1 className=' lg:text-center font-bold text-4xl text-indigo-600'>
-          Contact:
-        </h1>
-      </div>
-      <form
-        className=' mt-10 flex flex-col justify-center justify-items-center align-middle items-center gap-3 '
-        action='https://getform.io/f/c73c5492-eaec-424b-a282-1fe65b450168'
-        method='POST'
-      >
-        <input
-          className='h-9 p-3 border-2 border-solid border-zinc-500 rounded-lg    w-form max-w-lg'
-          type='text'
-          placeholder='Name'
-          name='name'
-        />
-        <input
-          className='h-9 p-3 border-2 border-solid border-zinc-500 rounded-lg   w-form max-w-lg'
-          type='email'
-          placeholder='Email'
-          name='email'
-        />
-        <textarea
-          className='h-32 p-3  border-2 border-solid border-zinc-500 rounded-lg w-form max-w-lg'
-          type='text'
-          name='message'
-          placeholder='Message'
-        />
+    <section
+      id='contact'
+      className={"section " + (darkTheme ? "bg-dark-2" : "bg-light")}
+    >
+      <div className={"container " + (classicHeader ? "" : "px-lg-5")}>
+        {/* Heading */}
+        <div className='position-relative d-flex text-center mb-5'>
+          <h2
+            className={
+              "text-24  text-uppercase fw-600 w-100 mb-0 " +
+              (darkTheme ? "text-muted opacity-1" : "text-light opacity-4")
+            }
+          >
+            Contact
+          </h2>
+          <p
+            className={
+              "text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0 " +
+              (darkTheme ? "text-white" : "text-dark")
+            }
+          >
+            {" "}
+            Get in Touch
+            <span className='heading-separator-line border-bottom border-3 border-primary d-block mx-auto' />
+          </p>
+        </div>
+        {/* Heading end*/}
+        <div className='row gy-5'>
+          {/* contact details */}
+          <div className='col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start'>
+            {/* <h2
+              className={
+                "mb-3 text-5 text-uppercase " + (darkTheme ? "text-white" : "")
+              }
+            >
+              Address
+            </h2>
+            <p className={"text-3 mb-4 " + (darkTheme ? "text-light" : "")}>
+              4th Floor, Plot No.22,
+              <br />
+              145 Murphy Canyon Rd.
+              <br />
+              San Diego CA 2028
+            </p> */}
+            <p className={"text-3 mb-1 " + (darkTheme ? "text-light" : "")}>
+              <span className='text-primary text-4 me-2'>
+                <i className='fas fa-phone' />
+              </span>
+              (+61) 477 353 123
+            </p>
 
-        <button
-          className=' p-2  text-white  font-bold bg-indigo-600 hover:bg-indigo-700  rounded-lg w-form max-w-lg'
-          type='submit'
-        >
-          Send
-        </button>
-      </form>
-      <div className=' mt-5 flex flex-col items-center justify-center'>
-        
-        <div>
-          Email:
-          <a className='ml-2 text-indigo-600' href='mailto:0477353123'>
-            nimasakha25@gmail.com
-          </a>
+            <p className={"text-3 mb-4 " + (darkTheme ? "text-light" : "")}>
+              <span className='text-primary text-4 me-2'>
+                <i className='fas fa-envelope' />
+              </span>
+              nimasakha25@gmail
+            </p>
+            <h2
+              className={
+                "mb-3 text-5 text-uppercase " + (darkTheme ? "text-white" : "")
+              }
+            >
+              Follow Me:
+            </h2>
+            <ul
+              className={
+                "social-icons justify-content-center justify-content-md-start " +
+                (darkTheme ? "social-icons-muted" : "")
+              }
+            >
+              <li className='social-icons-github'>
+                <Tooltip text='Github' placement='top'>
+                  <a
+                    href='https://github.com/NimaSakha'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <i className='fab fa-github' />
+                  </a>
+                </Tooltip>
+              </li>
+            </ul>
+          </div>
+          {/* contact form */}
+          <div className='col-md-8 col-xl-9 order-0 order-md-1'>
+            <h2
+              className={
+                "mb-3 text-5 text-uppercase text-center text-md-start " +
+                (darkTheme ? "text-white" : "")
+              }
+            >
+              Send us a note
+            </h2>
+            <form
+              className={darkTheme ? "form-dark" : ""}
+              id='contact-form'
+              action='php/mail.php'
+              method='post'
+              ref={form}
+              onSubmit={sendEmail}
+            >
+              <div className='row g-4'>
+                <div className='col-xl-6'>
+                  <input
+                    name='user_name'
+                    type='text'
+                    className='form-control'
+                    required
+                    placeholder='Name'
+                  />
+                </div>
+                <div className='col-xl-6'>
+                  <input
+                    name='user_email'
+                    type='email'
+                    className='form-control'
+                    required
+                    placeholder='Email'
+                  />
+                </div>
+                <div className='col'>
+                  <textarea
+                    name='message'
+                    className='form-control'
+                    rows={5}
+                    required
+                    placeholder='Tell us more about your needs........'
+                    defaultValue={""}
+                  />
+                </div>
+              </div>
+              <p className='text-center mt-4 mb-0'>
+                <button
+                  id='submit-btn'
+                  className='btn btn-primary rounded-pill d-inline-flex'
+                  type='submit'
+                >
+                  {sendingMail ? (
+                    <>
+                      <span
+                        role='status'
+                        aria-hidden='true'
+                        class='spinner-border spinner-border-sm align-self-center me-2'
+                      ></span>
+                      Sending.....
+                    </>
+                  ) : (
+                    <>Send Message</>
+                  )}
+                </button>
+              </p>
+              <ToastContainer />
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
